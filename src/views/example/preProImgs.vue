@@ -1,23 +1,23 @@
 <template>
     <div class="app-container">
         <h2 class="h2-title">
-<!--            <span>产品详情图片列表</span>-->
-            <el-button type="primary"  @click="createPdf(true)">生成pdf</el-button>
+            <!--            <span>产品详情图片列表</span>-->
+            <el-button type="primary" @click="createPdf(true)">生成pdf</el-button>
             <!--<span style="color:#409EFF" @click="addBanner">添加Banner</span>-->
         </h2>
         <hr/>
         <el-row>
-<!--            <el-col :span="4" v-for="(item, index) in imgList" :key="index" :offset="index >=2 ? 2 : 0"-->
+            <!--            <el-col :span="4" v-for="(item, index) in imgList" :key="index" :offset="index >=2 ? 2 : 0"-->
             <el-col :span="4" v-for="(item, index) in imgList" :key="index" :offset="index >=0 ? 2 : 0"
                     style="margin-bottom: 5px">
                 <el-card :body-style="{ padding: '0px' }">
                     <!--<img src="https://km-wx-1304476764.cos.ap-nanjing.myqcloud.com/banner/banner%402x.png" class="image">-->
-                    <img :src=item class="image">
+                    <img :src=item.bUrl class="image">
                     <div style="padding: 14px;">
                         <span>{{item.name}}</span>
                         <div class="bottom clearfix">
                             <time class="time">{{ currentDate }}</time>
-                            <el-button type="text" @click="openAlert(item.bannerId,item.name)" class="button">删除
+                            <el-button type="text" @click="openAlert(item)" class="button">删除
                             </el-button>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
         imgUrl: '',//头像url
         flag: true,
         fileList: [],
-        idAttr:''
+        idAttr: ''
       }
     },
     mounted() {
@@ -70,37 +70,67 @@
     },
 
     methods: {
-      //
-      createPdf(flag){
-        console.log("sdfasd",flag)
-        const idattr={productId:this.idAttr}
-        this.axios.get(api.creatPdfUp,{params:idattr})
-          .then((suc)=>{
-            console.log(suc)
+      //删除图片
+      openAlert(item) {
+        console.log(item)
+        console.log(123131231+"item")
+        var that = this;
+        this.$confirm(`此操作将删除:  banner图片 , 是否继续?`, {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          const params = { flagId: item.bIndex, proId: that.idAttr }
+          //删除图片列表单个照片
+          this.axios.get(api.updateInfo, { params: params })
+            .then((suc) => {
+                console.log(suc)
+              that.getProImages();
+            }).catch((error) => {
+            console.log(error)
           })
-        .catch((fail=>{console.log(fail)}))
+          console.log(item, index)
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      //生成pdf
+      createPdf(flag) {
+        // console.log('sdfasd', flag)
+        const idattr = { productId: this.idAttr }
+        this.axios.get(api.creatPdfUp, { params: idattr })
+          .then((suc) => {
+            // console.log(suc)
+          })
+          .catch((fail => {
+            console.log(fail)
+          }))
       },
       //获取图片列表
       getProImages() {
-        var that=this;
+        var that = this;
         //接收上个跳转的参数
         var data = this.$route.query;
-        that.idAttr=data.idAttr;
+        that.idAttr = data.idAttr;
         const par = { proId: data.idAttr };
         //获取产品图片列表
         this.axios.get(api.getProImgs, { params: par })
-        .then((suc)=>{
-          console.log(suc)
-          console.log(suc.data.code)
-          if(suc.data.code==200){
-            that.imgList=suc.data.data;
-            console.log(that.imgList)
-          }
-        })
-        .catch((error)=>{
-          console.log("失败")
-          console.log(error)
-        })
+          .then((suc) => {
+            console.log(suc)
+            console.log(suc.data.code)
+            if (suc.data.code == 200) {
+              that.imgList = suc.data.data;
+              console.log("----------------")
+              console.log(that.imgList)
+            }
+          })
+          .catch((error) => {
+            console.log('失败')
+            console.log(error)
+          })
       }
     }
   }

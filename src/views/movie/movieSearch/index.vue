@@ -292,6 +292,8 @@
       proviewImg(row){
         console.log(row)
         console.log(11)
+        // 带参跳转
+        this.$router.push({ path: '/example/preProImgs', query: { idAttr: row.idAttr } });
 
       },
       //去上传照片
@@ -308,7 +310,7 @@
         // 跳页面进行修改
         // this.$router.push('/example/form');
         // 带参跳转
-        this.$router.push({ path: '/example/preProImgs', query: { idAttr: row.idAttr } });
+        // this.$router.push({ path: '/example/preProImgs', query: { idAttr: row.idAttr } });
       },
       // 单个删除
       handleDelete(index, row) {

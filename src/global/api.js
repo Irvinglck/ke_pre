@@ -54,6 +54,7 @@ export const api = {
   uploadFiles:kmUrl+"/bsm/uploadFiles",//产品参数图片上传
   getProImgs:kmUrl+"/bsm/getProImgs",//产品参数图片列表
   creatPdfUp:kmUrl+"/wx/creatPdfUp",//根据图片生成pdf
+  updateInfo:kmUrl+"/bsm/updateInfo",//删除产品列表的图片
 
 }
 
