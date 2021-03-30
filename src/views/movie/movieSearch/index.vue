@@ -86,7 +86,7 @@
 
             <el-table-column align="center" prop="created_at" label="是否上传详情" width="">
                 <template slot-scope="scope">
-                    <el-button size="small" v-if="scope.row.haveImg" type="primary" @click="proviewImg(scope.row)" >已上传/预览</el-button>
+                    <el-button size="small" v-if="scope.row.haveImg=='true'" type="primary" @click="proviewImg(scope.row)" >已上传/预览</el-button>
                     <el-button v-else size="small" type="danger" @click="undoneImage(scope.$index, scope.row)">未上传/上传</el-button>
                 </template>
             </el-table-column>
@@ -228,7 +228,7 @@
       httpRequest(param) {
         this.file.push(param.file);// 一般情况下是在这里创建FormData对象，但我们需要上传多个文件，为避免发送多次请求，因此在这里只进行文件的获取，param可以拿到文件上传的所有信息
       },
-      // 提交
+      // 多文件上传
       uploadFiles() {
         var that=this;
         var upData = new FormData();

@@ -73,7 +73,7 @@
       //删除图片
       openAlert(item) {
         console.log(item)
-        console.log(123131231+"item")
+        console.log(123131231 + 'item')
         var that = this;
         this.$confirm(`此操作将删除:  banner图片 , 是否继续?`, {
           confirmButtonText: '确定',
@@ -84,8 +84,14 @@
           //删除图片列表单个照片
           this.axios.get(api.updateInfo, { params: params })
             .then((suc) => {
-                console.log(suc)
+              // console.log(suc);
               that.getProImages();
+              // console.log(that.imgList.length)
+              console.log("返回数组长度")
+              if(that.imgList.length===1){//由于请求异步的所以数组长度返回1时就要跳转
+                that.$router.push({ path: '/movie/movieSearch' });
+              }
+
             }).catch((error) => {
             console.log(error)
           })
@@ -123,7 +129,7 @@
             console.log(suc.data.code)
             if (suc.data.code == 200) {
               that.imgList = suc.data.data;
-              console.log("----------------")
+              console.log('----------------')
               console.log(that.imgList)
             }
           })
