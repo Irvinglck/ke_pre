@@ -48,23 +48,23 @@
                     {{scope.row.title}}
                 </template>
             </el-table-column>
-            <el-table-column label="打印机类型" width="" prop="title" sortable>
+            <el-table-column label="打印机类型" width="" prop="title">
                 <template slot-scope="scope">
                    <span v-if="scope.row.classid=='38'">多功能复合机</span>
                    <span v-else="scope.row.classid=='46'">打印机/一体机</span>
                 </template>
             </el-table-column>
-            <el-table-column label="名称" width="" prop="title" sortable>
+            <el-table-column label="名称" width="" prop="title" >
                 <template slot-scope="scope">
                     {{ scope.row.ftitle}}
                 </template>
             </el-table-column>
 
-            <el-table-column label="描述" width="">
-                <template slot-scope="scope">
-                    {{scope.row.smalltext}}
-                </template>
-            </el-table-column>
+<!--            <el-table-column label="描述" width="">-->
+<!--                <template slot-scope="scope">-->
+<!--                    {{scope.row.smalltext}}-->
+<!--                </template>-->
+<!--            </el-table-column>-->
 
 <!--            <el-table-column label="产品特点" width="">-->
 <!--                <template slot-scope="scope">-->
@@ -72,7 +72,7 @@
 <!--                </template>-->
 <!--            </el-table-column>-->
 
-            <el-table-column label="尺寸" align="center" width="" prop="rating.average" sortable>
+            <el-table-column label="尺寸" align="center" width="" prop="rating.average">
                 <template slot-scope="scope">
                     {{scope.row.outputsizemax}}
                 </template>
@@ -81,6 +81,16 @@
             <el-table-column align="center" prop="created_at" label="颜色" width="">
                 <template slot-scope="scope">
                     <span>{{scope.row.colour}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center"  label="彩印打印速度" width="">
+                <template slot-scope="scope">
+                    <span>{{scope.row.output_speed_color}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" prop="created_at" label="黑白打印速度" width="">
+                <template slot-scope="scope">
+                    <span>{{scope.row.output_speed_mono}}</span>
                 </template>
             </el-table-column>
 
@@ -162,6 +172,12 @@
                 <el-form-item label="颜色">
                     <el-input v-model="product.colour"></el-input>
                 </el-form-item>
+                <el-form-item label="彩印打印速度">
+                    <el-input v-model="product.outputSpeedColor"></el-input>
+                </el-form-item>
+                <el-form-item label="黑白打印速度">
+                    <el-input v-model="product.outputSpeedMono"></el-input>
+                </el-form-item>
 
 
             </el-form>
@@ -193,11 +209,14 @@
           type: null// 类型
         },
         product: {
+          idAttr:'',
           title: '',
           classid: '',
           ftitle: '',
           outputsizemax: '',
           colour: '',
+          outputSpeedColor:'',
+          outputSpeedMono:'',
         },
         typeOptions: [
           { key: '001', display_name: '类型1' },
@@ -281,9 +300,6 @@
         //获取产品列表
         this.axios.get(api.proList, { params: par }).then(res => {
           vm.list = res.data.data.data;
-          // console.log('1231231231')
-          // console.log(vm.list)
-          // console.log('1231231231')
         }).catch(error => {
           console.log(error)
         });
@@ -307,19 +323,36 @@
       handleEdit(index, row) {
         const vm = this;
         console.log('编辑的row：', index, '-----', row);
-        // 跳页面进行修改
-        // this.$router.push('/example/form');
-        // 带参跳转
-        // this.$router.push({ path: '/example/preProImgs', query: { idAttr: row.idAttr } });
+        console.log(this.list[index]);
+
+        let pro=this.list[index];
+        this.product.idAttr=pro.idAttr;
+        this.product.classid=pro.classid;
+        this.product.colour=pro.colour;
+        this.product.ftitle=pro.ftitle;
+        this.product.outputsizemax=pro.outputsizemax;
+        this.product.title=pro.title;
+        this.product.outputSpeedColor=pro.output_speed_color;
+        this.product.outputSpeedMono=pro.output_speed_mono;
+
+        this.dialogFormVisible=true;
+
+        this.axios.get(api.updatePro,vm.product)
+          .then((suc)=>{
+            vm.getList();
+          })
+        .catch((error)=>{
+
+        })
       },
       // 单个删除
       handleDelete(index, row) {
         const vm = this;
         console.log('单个删除选择的row：', index, '-----', row);
-        let proId={proId:row}
-        this.axios.get(api.delPro,{params,proId})
+        let proId={proId:row.idAttr}
+        this.axios.get(api.delPro,{params:proId})
           .then((success)=>{
-            // console.log(success)
+            vm.getList();
             console.log("删除su")
           })
           .catch((error)=>{
@@ -360,6 +393,7 @@
 
         this.axios.post(api.addPro,vm.product).then(suc=>{
           console.log("addPro成功")
+          vm.getList();
         }).catch(err=>{
           console.log("addPro失败")
         })

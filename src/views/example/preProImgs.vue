@@ -75,7 +75,7 @@
         console.log(item)
         console.log(123131231 + 'item')
         var that = this;
-        this.$confirm(`此操作将删除:  banner图片 , 是否继续?`, {
+        this.$confirm(`此操作将删除: 参数详情照片 , 是否继续?`, {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -105,11 +105,15 @@
       },
       //生成pdf
       createPdf(flag) {
-        // console.log('sdfasd', flag)
         const idattr = { productId: this.idAttr }
         this.axios.get(api.creatPdfUp, { params: idattr })
           .then((suc) => {
-            // console.log(suc)
+            if(suc.data.code==200){
+              this.$message({
+                type: 'info',
+                message: 'pdf生成成功地址: '+suc.data.data
+              });
+            }
           })
           .catch((fail => {
             console.log(fail)
