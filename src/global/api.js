@@ -47,7 +47,7 @@ export const api = {
 
   kmBanner:kmUrl+"/bsm/getBanner",//banner列表
   delBanner:kmUrl+"/bsm/delBanner",//删除banner
-  uploadFileByType:kmUrl+"/bsm/uploadFileByType",//添加banner上传文件
+  uploadFileByType:kmUrl+"/bsm/uploadFileByType",//添加banner上传文件/上传新闻
   proList:kmUrl+"/bsm/getProInfos",//获取产品列表
   delPro:kmUrl+"/bsm/delPro",//删除单个文件
   addPro:kmUrl+"/bsm/addPro",//删除单个文件
@@ -56,6 +56,10 @@ export const api = {
   creatPdfUp:kmUrl+"/wx/creatPdfUp",//根据图片生成pdf
   updateInfo:kmUrl+"/bsm/updateInfo",//删除产品列表的图片
   updatePro:kmUrl+"/bsm/updatePro",//修改产品属性
+  getNewsList:kmUrl+"/bsm/getNews",//获取新闻列表
+  delNews:kmUrl+"/bsm/delNews",//删除新闻
+  getUsers:kmUrl+"/bsm/getUsers",//获取用户列表
+  delUser:kmUrl+"/bsm/delUser",//删除新闻
 
 }
 

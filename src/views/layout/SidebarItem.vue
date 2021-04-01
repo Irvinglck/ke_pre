@@ -34,12 +34,17 @@
                 </el-menu-item>
             </router-link>
 
-            <router-link  to="/movie/movieSearch"  v-if="routes['/movie/news']" >
+            <router-link  to="/movie/news"  v-if="routes['/movie/news']" >
                 <el-menu-item index="/movie/news">
                     <i class="fa fa-table" aria-hidden="true"></i> 新闻管理
                 </el-menu-item>
             </router-link>
 
+            <router-link  to="/movie/userManager"  v-if="routes['/movie/userManager']" >
+                <el-menu-item index="/movie/userManager">
+                    <i class="fa fa-table" aria-hidden="true"></i> 后台人员管理
+                </el-menu-item>
+            </router-link>
             <!--<router-link  to="/example/tableList"  v-if="routes['/example/tableList']" >-->
                 <!--<el-menu-item index="/example/tableList">-->
                     <!--<i class="fa fa-table" aria-hidden="true"></i> 示例表格-->

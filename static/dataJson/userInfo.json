@@ -21,6 +21,7 @@
                 "/movie/newMovie":true,
                 "/movie/movieSearch":true,
                 "/movie/news":true,
+                "/movie/userManager":true,
         		"/errorpage/401":false,
         		"/errorpage/404":false,
                 "/example/form":true,

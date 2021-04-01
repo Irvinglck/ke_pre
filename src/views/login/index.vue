@@ -20,12 +20,12 @@
                 </el-button>
             </el-form-item>
             <div class='tips'>测试帐号为:81438234@qq.com 密码：123456</div>
-            
+
             <router-link to="/sendpwd" class="forget-pwd">
                 忘记密码?(或首次登录)
             </router-link>
         </el-form>
-       
+
     </div>
 </template>
 
@@ -34,10 +34,10 @@
     import { isEmail } from 'utils/validate';
     import md5 from 'blueimp-md5';
     // import { getQueryObject } from 'utils';
-   
+
 
     export default {
-      
+
       name: 'login',
       data() {
         const validateEmail = (rule, value, callback) => {
@@ -96,8 +96,9 @@
       },
       methods: {
         handleLogin() {
-            
+
             this.$refs.loginForm.validate(valid => {
+              alert(valid)
                 if (valid) {
                   this.loading = true;
                     var  par = JSON.parse(JSON.stringify(this.loginForm)) ;
@@ -105,11 +106,11 @@
 
                     this.$store.dispatch('LoginByEmail', par).then(() => {
                     this.loading = false;
-                   
+
                     console.log('登陆成功即将跳转--------')
                     this.$router.push({ path: '/' });
-                   
-                        
+
+
                     // this.showDialog = true;
                   }).catch(err => {
                     this.$message.error(err);
@@ -160,10 +161,10 @@
         @include relative;
         height: 100vh;
         /*background-color: #2d3a4b;*/
-       
+
         background: url('../../assets/img/bg_sky.jpg') no-repeat;
         background-size: cover;
-        
+
         input:-webkit-autofill {
             -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
             -webkit-text-fill-color: #fff !important;

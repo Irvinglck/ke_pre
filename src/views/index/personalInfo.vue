@@ -15,7 +15,7 @@
                     <img v-else :src="personalInfo.avatar" alt="用户头像">
 
                     <el-upload class="avatar-uploader"
-                               action="https://jsonplaceholder.typicode.com/posts/"
+                               action="none"
                                :show-file-list="false" :on-success="handleAvatarSuccess"
                                :before-upload="beforeAvatarUpload">
                         <button type="button" class="el-button filter-item el-button--primary" style="margin-top:10px">
@@ -97,7 +97,7 @@
 
             </el-col>
         </el-row>
-        <div id="text">
+        <div style="display: none" id="text">
             <el-form ref="form" :model="newData" label-width="80px" label-position="right" size="mini">
                 <el-form-item label="上传文件" prop="name">
                     <el-upload

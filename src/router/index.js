@@ -31,6 +31,8 @@ const TableList = _import('example/tableList');
 // 豆瓣电影
 const NewMovie = _import('movie/newMovie');
 const MovieSearch = _import('movie/movieSearch/index');
+const News = _import('movie/news');
+const UserManager = _import('movie/userManager');
 
 
 const Form = _import('example/form');
@@ -99,6 +101,8 @@ const constantRouterMap = [
     children: [
         { path: 'newMovie', component: NewMovie, name: 'Banner操作管理' },
         { path: 'movieSearch', component: MovieSearch, name: '产品管理' },
+        { path: 'news', component: News, name: '新闻管理' },
+        { path: 'userManager', component: UserManager, name: '后台人员管理' },
     ]
   },
 
