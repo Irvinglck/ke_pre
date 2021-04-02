@@ -20,7 +20,8 @@ const url = {
 const nodeApiBaseUrl = 'http://localhost:3000';
 
 //柯尼卡
-const kmUrl = 'http://localhost:8080';
+// const kmUrl = 'http://localhost:8080';
+const kmUrl = 'http://localhost:9999';
 
 export const api = {
 
