@@ -13,14 +13,18 @@
                 </el-menu-item>
             </router-link> -->
 
-            <router-link  to="/index/personalInfo"  v-if="routes['/index/personalInfo']" >
-                <el-menu-item index="/index/personalInfo">
-                    <i class="fa fa-home" aria-hidden="true"></i> 首页
+            <!--<router-link  to="/index/personalInfo"  v-if="routes['/index/personalInfo']" >-->
+                <!--<el-menu-item index="/index/personalInfo">-->
+                    <!--<i class="fa fa-home" aria-hidden="true"></i> 首页-->
 
+                <!--</el-menu-item>-->
+            <!--</router-link>-->
+
+            <router-link  to="/movie/userManager"  v-if="routes['/movie/userManager']" >
+                <el-menu-item index="/movie/userManager">
+                    <i class="fa fa-table" aria-hidden="true"></i> 人员管理
                 </el-menu-item>
             </router-link>
-
-
 
             <router-link  to="/movie/newMovie"  v-if="routes['/movie/newMovie']" >
                 <el-menu-item index="/movie/newMovie">
@@ -40,11 +44,7 @@
                 </el-menu-item>
             </router-link>
 
-            <router-link  to="/movie/userManager"  v-if="routes['/movie/userManager']" >
-                <el-menu-item index="/movie/userManager">
-                    <i class="fa fa-table" aria-hidden="true"></i> 后台人员管理
-                </el-menu-item>
-            </router-link>
+
             <!--<router-link  to="/example/tableList"  v-if="routes['/example/tableList']" >-->
                 <!--<el-menu-item index="/example/tableList">-->
                     <!--<i class="fa fa-table" aria-hidden="true"></i> 示例表格-->

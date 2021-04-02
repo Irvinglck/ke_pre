@@ -1,32 +1,31 @@
 <template>
     <div class="">
         <el-menu class="navbar" mode="horizontal">
-            
+
             <i class="fa fa-bars" @click="toggleSideBar" :isActive="sidebar.opened"></i>
-           
+
             <tabs-view></tabs-view>
-            
+
             <error-log v-if="log.length>0" class="errLog-container" :logsList="log"></error-log>
             <screenfull class='screenfull'></screenfull>
             <el-dropdown class="avatar-container" trigger="click">
                 <div class="avatar-wrapper">
-                    <span class="user-name">{{userInfo.nickname}}</span>
-                    <img class="user-avatar" :src="userInfo.avatar+'?imageView2/1/w/80/h/80'">
-                    <i class="el-icon-caret-bottom"></i>
+                    <!--<span class="user-name">{{userInfo.nickname}}</span>-->
+                    <!--<img class="user-avatar" :src="userInfo.avatar+'?imageView2/1/w/80/h/80'">-->
+                    操作 <i class="el-icon-caret-bottom"></i>
                 </div>
                 <el-dropdown-menu class="user-dropdown" slot="dropdown">
-                    <router-link class='inlineBlock' to="/index/personalInfo">
+                    <router-link class='inlineBlock' to="/movie/userManager">
                         <el-dropdown-item>
                             首页
                         </el-dropdown-item>
                     </router-link>
-                    <el-dropdown-item >
-                            <span @click="dialogFormVisible = true">修改密码</span>
-                        </el-dropdown-item>
-                    <!-- <router-link class='inlineBlock' to="/admin/profile"> -->
-                        <el-dropdown-item >
-                            <span @click="dialogVisible = true">切换主题</span>
-                        </el-dropdown-item>
+                    <!--<el-dropdown-item >-->
+                            <!--<span @click="dialogFormVisible = true">修改密码</span>-->
+                        <!--</el-dropdown-item>-->
+                        <!--<el-dropdown-item >-->
+                            <!--<span @click="dialogVisible = true">切换主题</span>-->
+                        <!--</el-dropdown-item>-->
                     <!-- </router-link> -->
                     <el-dropdown-item divided><span @click="logout" style="display:block;">退出登录</span></el-dropdown-item>
                 </el-dropdown-menu>
@@ -37,8 +36,8 @@
         <el-dialog title="密码修改" :visible.sync="dialogFormVisible">
 
             <el-form class="small-space" :model="passwordForm"  :rules="passwordFormRules" ref="passwordForm" label-position="right" label-width="100px" style='width: 400px; margin-left:50px;'>
-             
-               
+
+
 
                 <el-form-item label="原密码" prop="oldPassword" >
                   <el-input type="password" v-model="passwordForm.oldPassword" auto-complete="off"></el-input>
@@ -52,20 +51,20 @@
                   <el-input type="password" v-model="passwordForm.newPassword2" auto-complete="off"></el-input>
                 </el-form-item>
 
-                
-               
+
+
             </el-form>
 
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-               
+
                 <el-button type="primary" @click="handlePwdModifySubmit(passwordForm)">确 定</el-button>
               </div>
         </el-dialog>
         <!-- 换肤弹窗 -->
         <el-dialog title="更改主题颜色" :visible.sync="dialogVisible" >
               <el-form class="small-space" label-position="left" label-width="130px" style='width: 400px; margin-left:50px;'>
-             
+
                 <el-form-item label="请选择主题颜色：" prop="resource">
                    <el-radio-group v-model="themeValue">
                         <el-radio label="blue">蓝色</el-radio>
@@ -74,25 +73,25 @@
                    </el-radio-group>
                  </el-form-item>
 
-                
-               
+
+
               </el-form>
 
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-               
+
                 <el-button type="primary" @click="handleChangeTheme">确 定</el-button>
               </div>
-        </el-dialog>    
-    
+        </el-dialog>
+
     </div>
 </template>
 
 <script>
     import { mapGetters } from 'vuex';
-    
+
     import TabsView from './TabsView';
-    
+
     import Screenfull from 'components/Screenfull';
     import ErrorLog from 'components/ErrLog';
     import errLogStore from 'store/errLog';
@@ -104,16 +103,16 @@
     export default {
       components: {
         TabsView,
-        
+
         ErrorLog,
         Screenfull
       },
       data() {
         const validateOldPassword = (rule, value, callback) => {
-            if ( md5('@lss'+value) !== md5('@lss123456') ) { 
+            if ( md5('@lss'+value) !== md5('@lss123456') ) {
                   callback(new Error('旧密码不正确！'));
             } else {
-                
+
                 callback();
             }
         };
@@ -139,7 +138,7 @@
                 oldPassword: [
                     { required: true, trigger: 'blur', message: '旧密码不能为空！'},
                     { required: true, trigger: 'blur' , validator: validateOldPassword}
-                   
+
                 ],
                 newPassword: [
                     { required: true, trigger: 'blur', message: '新密码不能为空！'},
@@ -155,7 +154,7 @@
         ...mapGetters([
           'sidebar',
           'userInfo',
-            
+
         ])
       },
        mounted() {
@@ -254,7 +253,7 @@
                     float: left;
                     margin-right: 5px;
                 }
-                
+
                 .user-avatar {
                     width: 40px;
                     height: 40px;

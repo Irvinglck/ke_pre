@@ -1,9 +1,10 @@
 <template>
     <div class="login-container">
-        <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"
+        <!--<el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"-->
+        <el-form :model="loginForm" label-position="left"
                  label-width="0px"
                  class="card-box login-form">
-            <h3 class="title">系统登录<i class="fa fa-tripadvisor" aria-hidden="true"></i></h3>
+            <h3 class="title">柯尼卡小程序后台管理<i class="fa fa-tripadvisor" aria-hidden="true"></i></h3>
             <el-form-item prop="email">
                 <span class="svg-container"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
                 <el-input name="email" type="text" v-model="loginForm.email" autoComplete="off"
@@ -11,152 +12,189 @@
             </el-form-item>
             <el-form-item prop="password">
                 <span class="svg-container"><i class="fa fa-lock" aria-hidden="true"></i></span>
-                <el-input name="password" type="password" @keyup.enter.native="handleLogin" v-model="loginForm.password"
+                <!--<el-input name="password" type="password" @keyup.enter.native="handleLogin" v-model="loginForm.password"-->
+                <el-input name="password" type="password" v-model="loginForm.password"
                           autoComplete="off" placeholder="密码"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
+                <el-button type="primary" style="width:100%;" :loading="loading" @click="handleLogin">
                     登录
                 </el-button>
             </el-form-item>
-            <div class='tips'>测试帐号为:81438234@qq.com 密码：123456</div>
+            <div class='tips'>管理员帐号为:km 密码：123456</div>
 
-            <router-link to="/sendpwd" class="forget-pwd">
-                忘记密码?(或首次登录)
-            </router-link>
+            <!--<router-link to="/sendpwd" class="forget-pwd">-->
+                <!--忘记密码?(或首次登录)-->
+            <!--</router-link>-->
         </el-form>
 
     </div>
 </template>
 
 <script>
-    // import { mapGetters } from 'vuex';
-    import { isEmail } from 'utils/validate';
-    import md5 from 'blueimp-md5';
-    // import { getQueryObject } from 'utils';
+  // import { mapGetters } from 'vuex';
+  import { isEmail } from 'utils/validate';
+  import md5 from 'blueimp-md5';
+  import { api } from 'src/global/api';
+  // import { getQueryObject } from 'utils';
 
 
-    export default {
+  export default {
 
-      name: 'login',
-      data() {
-        const validateEmail = (rule, value, callback) => {
-          if (!isEmail(value)) {
-            callback(new Error('请输入正确的合法邮箱'));
-          } else {
-            callback();
-          }
-        };
-        const validateAccount = (rule, value, callback) => {
-        if (value !== '81438234@qq.com') {
-              callback(new Error('帐号不存在！'));
-            } else {
-              callback();
-            }
-        };
-        const validatePass = (rule, value, callback) => {
-          if (value.length < 6) {
-            callback(new Error('密码不能小于6位'));
-          } else {
-            callback();
-          }
-        };
-        const validatePass2 = (rule, value, callback) => {
-          if ( md5('@lss'+value) !== md5('@lss123456') ) {
-                callback(new Error('密码错误！'));
-          } else {
-                callback();
-          }
-        };
+    name: 'login',
+    data() {
+      // const validateEmail = (rule, value, callback) => {
+      //   if (!isEmail(value)) {
+      //     callback(new Error('请输入正确的合法邮箱'));
+      //   } else {
+      //     callback();
+      //   }
+      // };
+      // const validateAccount = (rule, value, callback) => {
+      // if (value !== '81438234@qq.com') {
+      //       callback(new Error('帐号不存在！'));
+      //     } else {
+      //       callback();
+      //     }
+      // };
+      // const validatePass = (rule, value, callback) => {
+      //   if (value.length < 6) {
+      //     callback(new Error('密码不能小于6位'));
+      //   } else {
+      //     callback();
+      //   }
+      // };
+      // const validatePass2 = (rule, value, callback) => {
+      //   if ( md5('@lss'+value) !== md5('@lss123456') ) {
+      //         callback(new Error('密码错误！'));
+      //   } else {
+      //         callback();
+      //   }
+      // };
 
-        return {
-            loginForm: {
-                email: '81438234@qq.com',
-                password: ''
-            },
-            loginRules: {
-                email: [
-                    { required: true, trigger: 'blur', validator: validateEmail },
-                    {  trigger: 'blur' , validator: validateAccount}
-                ],
-                password: [
-                    { required: true, trigger: 'blur', validator: validatePass },
-                    {  trigger: 'blur' , validator: validatePass2}
-                ]
-            },
-            loading: false,
-            showDialog: false
-        }
-      },
-      computed: {
-        // ...mapGetters([
-        //   // 映射 this.auth_type 为 store.getters.auth_type。已删除
-        //   'auth_type'
-        // ])
-      },
-      methods: {
-        handleLogin() {
-
-            this.$refs.loginForm.validate(valid => {
-              alert(valid)
-                if (valid) {
-                  this.loading = true;
-                    var  par = JSON.parse(JSON.stringify(this.loginForm)) ;
-                         par.password = md5('@lss'+par.password);
-
-                    this.$store.dispatch('LoginByEmail', par).then(() => {
-                    this.loading = false;
-
-                    console.log('登陆成功即将跳转--------')
-                    this.$router.push({ path: '/' });
-
-
-                    // this.showDialog = true;
-                  }).catch(err => {
-                    this.$message.error(err);
-                    this.loading = false;
-                  });
-                } else {
-                  console.log('error submit!!');
-                  return false;
-                }
-            });
+      return {
+        loginForm: {
+          // email: '81438234@qq.com',
+          email: 'km',
+          password: ''
         },
-        afterQRScan() {
-          // const hash = window.location.hash.slice(1);
-          // const hashObj = getQueryObject(hash);
-          // const originUrl = window.location.origin;
-          // history.replaceState({}, '', originUrl);
-          // const codeMap = {
-          //   wechat: 'code',
-          //   tencent: 'code'
-          // };
-          // const codeName = hashObj[codeMap[this.auth_type]];
-          // if (!codeName) {
-          //   alert('第三方登录失败');
-          // } else {
-          //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-          //     this.$router.push({ path: '/' });
-          //   });
-          // }
-        }
-      },
-      created() {
-        // window.addEventListener('hashchange', this.afterQRScan);
-      },
-      destroyed() {
-        // window.removeEventListener('hashchange', this.afterQRScan);
+        // loginRules: {
+        //     email: [
+        //         { required: true, trigger: 'blur', validator: validateEmail },
+        //         {  trigger: 'blur' , validator: validateAccount}
+        //     ],
+        //     password: [
+        //         { required: true, trigger: 'blur', validator: validatePass },
+        //         {  trigger: 'blur' , validator: validatePass2}
+        //     ]
+        // },
+        loading: false,
+        showDialog: false
       }
+    },
+    computed: {
+      // ...mapGetters([
+      //   // 映射 this.auth_type 为 store.getters.auth_type。已删除
+      //   'auth_type'
+      // ])
+    },
+    methods: {
+      handleLogin() {
+        var that=this;
+        var user={
+          account: this.loginForm.email,
+          password: this.loginForm.password
+        }
+        this.axios.get(api.userLogin,{params:user})
+          .then((suc) => {
+            console.log('成功');
+            console.log(suc);
+            if(suc.data.code==200){
+              this.$store.dispatch('LoginByEmail', suc.data.data.password).then(() => {
+                this.loading = false;
+
+                console.log('登陆成功即将跳转--------')
+                // this.$router.push({ path: '/' });
+                this.$router.push({ path: '/movie/userManager' });
+
+
+                // this.showDialog = true;
+              }).catch(err => {
+                this.$message.error(err);
+                this.loading = false;
+              });
+            }else{
+              this.$message({
+                message: '登录异常:'+suc.data.msg,
+                type: 'warning'
+              });
+            }
+          })
+          .catch((faile) => {
+            console.log('失败');
+            console.log(faile);
+          })
+        // this.$refs.loginForm.validate(valid => {
+        //     if (valid) {
+        //       this.loading = true;
+        //         var  par = JSON.parse(JSON.stringify(this.loginForm)) ;
+        //              par.password = md5('@lss'+par.password);
+        //
+        //         this.$store.dispatch('LoginByEmail', par).then(() => {
+        //         this.loading = false;
+        //
+        //         console.log('登陆成功即将跳转--------')
+        //         this.$router.push({ path: '/' });
+        //
+        //
+        //         // this.showDialog = true;
+        //       }).catch(err => {
+        //         this.$message.error(err);
+        //         this.loading = false;
+        //       });
+        //     } else {
+        //       console.log('error submit!!');
+        //       return false;
+        //     }
+        // });
+      },
+      afterQRScan() {
+        // const hash = window.location.hash.slice(1);
+        // const hashObj = getQueryObject(hash);
+        // const originUrl = window.location.origin;
+        // history.replaceState({}, '', originUrl);
+        // const codeMap = {
+        //   wechat: 'code',
+        //   tencent: 'code'
+        // };
+        // const codeName = hashObj[codeMap[this.auth_type]];
+        // if (!codeName) {
+        //   alert('第三方登录失败');
+        // } else {
+        //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
+        //     this.$router.push({ path: '/' });
+        //   });
+        // }
+      }
+    },
+    created() {
+      // window.addEventListener('hashchange', this.afterQRScan);
+    },
+    destroyed() {
+      // window.removeEventListener('hashchange', this.afterQRScan);
     }
+  }
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
     @import "src/assets/css/mixin.scss";
-    .tips{
-      font-size: 14px;
-      color: #fff;
-      margin-bottom: 5px;
+
+    .tips {
+        font-size: 14px;
+        color: #fff;
+        margin-bottom: 5px;
     }
+
     .login-container {
         @include relative;
         height: 100vh;
