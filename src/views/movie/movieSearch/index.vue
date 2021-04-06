@@ -100,7 +100,12 @@
                     <el-button v-else size="small" type="danger" @click="undoneImage(scope.$index, scope.row)">未上传/上传</el-button>
                 </template>
             </el-table-column>
-
+            <el-table-column align="center" label="上传pdf" width="150px">
+                <template slot-scope="scope">
+                    <el-button size="small" type="warning" @click="handleUploadPdf(scope.row)">上传pdf</el-button>
+                    <el-button size="small" type="info">已上传pdf</el-button>
+                </template>
+            </el-table-column>
             <el-table-column align="center" label="操作" width="150px">
                 <template slot-scope="scope">
 
@@ -109,6 +114,7 @@
 
                 </template>
             </el-table-column>
+
         </el-table>
         <!-- 分页 -->
         <div v-show="!listLoading" class="pagination-container">
@@ -365,6 +371,11 @@
         // .catch((error)=>{
         //
         // })
+      },
+      //上传pdf
+      handleUploadPdf(row){
+        console.log(row)
+
       },
       // 单个删除
       handleDelete(index, row) {

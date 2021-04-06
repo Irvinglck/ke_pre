@@ -21,7 +21,10 @@ const nodeApiBaseUrl = 'http://localhost:3000';
 
 //柯尼卡
 // const kmUrl = 'http://localhost:8080';
-const kmUrl = 'http://localhost:9999';
+//小程序本地开发
+// const kmUrl = 'http://localhost:9999';
+//控制台本地
+const kmUrl = 'http://localhost:9999/kmbsm';
 
 export const api = {
 
