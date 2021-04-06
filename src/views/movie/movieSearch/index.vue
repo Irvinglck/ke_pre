@@ -10,9 +10,9 @@
                       v-model="listQuery.name">
             </el-input>
 
-<!--            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="产品类型"-->
-<!--                      v-model="listQuery.type">-->
-<!--            </el-input>-->
+            <!--            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="产品类型"-->
+            <!--                      v-model="listQuery.type">-->
+            <!--            </el-input>-->
 
 
             <!-- <el-select clearable class="filter-item" style="width: 130px" v-model="listQuery.type" placeholder="类型">
@@ -50,27 +50,27 @@
             </el-table-column>
             <el-table-column label="打印机类型" width="" prop="title">
                 <template slot-scope="scope">
-                   <span v-if="scope.row.classid=='38'">多功能复合机</span>
-                   <span v-else="scope.row.classid=='46'">打印机/一体机</span>
+                    <span v-if="scope.row.classid=='38'">多功能复合机</span>
+                    <span v-else="scope.row.classid=='46'">打印机/一体机</span>
                 </template>
             </el-table-column>
-            <el-table-column label="名称" width="" prop="title" >
+            <el-table-column label="名称" width="" prop="title">
                 <template slot-scope="scope">
                     {{ scope.row.ftitle}}
                 </template>
             </el-table-column>
 
-<!--            <el-table-column label="描述" width="">-->
-<!--                <template slot-scope="scope">-->
-<!--                    {{scope.row.smalltext}}-->
-<!--                </template>-->
-<!--            </el-table-column>-->
+            <!--            <el-table-column label="描述" width="">-->
+            <!--                <template slot-scope="scope">-->
+            <!--                    {{scope.row.smalltext}}-->
+            <!--                </template>-->
+            <!--            </el-table-column>-->
 
-<!--            <el-table-column label="产品特点" width="">-->
-<!--                <template slot-scope="scope">-->
-<!--                    <span>{{scope.row.cert}}</span>-->
-<!--                </template>-->
-<!--            </el-table-column>-->
+            <!--            <el-table-column label="产品特点" width="">-->
+            <!--                <template slot-scope="scope">-->
+            <!--                    <span>{{scope.row.cert}}</span>-->
+            <!--                </template>-->
+            <!--            </el-table-column>-->
 
             <el-table-column label="尺寸" align="center" width="" prop="rating.average">
                 <template slot-scope="scope">
@@ -83,7 +83,7 @@
                     <span>{{scope.row.colour}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center"  label="彩印打印速度" width="">
+            <el-table-column align="center" label="彩印打印速度" width="">
                 <template slot-scope="scope">
                     <span>{{scope.row.output_speed_color}}</span>
                 </template>
@@ -96,14 +96,18 @@
 
             <el-table-column align="center" prop="created_at" label="是否上传详情" width="">
                 <template slot-scope="scope">
-                    <el-button size="small" v-if="scope.row.haveImg=='true'" type="primary" @click="proviewImg(scope.row)" >已上传/预览</el-button>
-                    <el-button v-else size="small" type="danger" @click="undoneImage(scope.$index, scope.row)">未上传/上传</el-button>
+                    <el-button size="small" v-if="scope.row.haveImg=='true'" type="primary"
+                               @click="proviewImg(scope.row)">已上传/预览
+                    </el-button>
+                    <el-button v-else size="small" type="danger" @click="undoneImage(scope.$index, scope.row)">未上传/上传
+                    </el-button>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="上传pdf" width="150px">
                 <template slot-scope="scope">
-                    <el-button size="small" type="warning" @click="handleUploadPdf(scope.row)">上传pdf</el-button>
-                    <el-button size="small" type="info">已上传pdf</el-button>
+                    <el-button v-if="scope.row.havePdf=='true'" size="small" type="info">已上传pdf</el-button>
+                    <el-button v-else size="small" type="warning" @click="handleUploadPdf(scope.row)">上传pdf</el-button>
+
                 </template>
             </el-table-column>
             <el-table-column align="center" label="操作" width="150px">
@@ -124,6 +128,38 @@
                            layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
+        <!-- 上传产品pdf -->
+        <el-dialog title="上传产品pdf" :visible.sync="dialogpdf">
+            <el-form class="small-space" :model="productPdf" label-position="left" label-width="70px"
+                     style='width: 400px; margin-left:50px;'>
+
+                <!--                <el-form-item label="标题">-->
+                <!--                    <el-input v-model="productPdf.title"></el-input>-->
+                <!--                </el-form-item>-->
+                <!--<el-form-item label="选择banner图片" :label-width="formLabelWidth">-->
+                <el-form-item label="上传产品pdf">
+                    <el-upload
+                            class="upload-demo"
+                            drag
+                            :auto-upload="false"
+                            :on-change="checkType"
+                            action="none"
+                            :show-file-list="flag"
+                    >
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                        <div class="el-upload__tip" slot="tip" style="color: red;">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                </el-form-item>
+
+            </el-form>
+
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogpdf = false">取 消</el-button>
+
+                <el-button type="primary" @click="addProPdf()">确 定</el-button>
+            </div>
+        </el-dialog>
         <!--上传产品详情文件-->
         <el-dialog title="添加产品详情" :visible.sync="detailProDialog">
             <div id="text">
@@ -222,17 +258,24 @@
           name: '',
           type: null// 类型
         },
+        productPdf: {
+          title: ''
+        },
         product: {
-          idAttr:'',
+          idAttr: '',
           title: '',
           classid: '',
           ftitle: '',
           outputsizemax: '',
           colour: '',
-          outputSpeedColor:'',
-          outputSpeedMono:'',
+          outputSpeedColor: '',
+          outputSpeedMono: ''
         },
-        pageName:'',
+        pageName: '',
+        dialogpdf: false,
+        flag: true,
+        imgFile: null,
+        fileList: [],
         typeOptions: [
           { key: '001', display_name: '类型1' },
           { key: '002', display_name: '类型2' },
@@ -243,11 +286,11 @@
         form: {
           name: ''
         },
-        detailProDialog:false,
+        detailProDialog: false,
         multipleSelection: [],
         newData: {},
         file: [],
-        idAttr:'',//产品id
+        idAttr: '',//产品id
         options: [{
           classid: '38',
           label: '多功能复合机'
@@ -258,6 +301,7 @@
           classid: '50',
           label: '其他'
         }],
+        proInfoId: ''
 
 
       }
@@ -267,6 +311,40 @@
       vm.getList();
     },
     methods: {
+      addProPdf() {
+        //参考 https://blog.csdn.net/qq_42394457/article/details/96769170
+        this.dialogpdf = false;
+        let formData = new FormData();
+        console.log('文件对象', this.imgFile)
+        //这是提交到后台的文件
+        formData.append('imgFile', this.imgFile.raw);
+        formData.append('fileType', 'proPdf');
+        formData.append('proInfoId', this.proInfoId);
+        this.axios.post(api.uploadFileByType, formData)
+          .then((suc) => {
+            console.log('图片上传成功');
+            console.log(suc.data)
+            this.$message({
+              message: '图片上传成功',
+              type: 'success'
+            });
+            this.flag = false;
+            //重置输入库的值
+            this.getList();
+          })
+          .catch((error) => {
+            this.$message.error('上传失败');
+            console.log(error)
+          })
+
+      },
+      checkType(file, fileList) {
+        console.log('file', file)
+        console.log('fileList', fileList)
+        this.imgFile = file;
+        // this.imgFile.push(file);
+        this.fileList.push(file)
+      },
 
       //多文件上传
       httpRequest(param) {
@@ -274,41 +352,41 @@
       },
       // 多文件上传
       uploadFiles() {
-        var that=this;
+        var that = this;
         var upData = new FormData();
         this.$refs.upload.submit();// 这里是执行文件上传的函数，其实也就是获取我们要上传的文件
         this.file.forEach(function(file) {// 因为要上传多个文件，所以需要遍历
           upData.append('files', file, file.name);
           // upData.append('file', this.file); //不要直接使用我们的文件数组进行上传，你会发现传给后台的是两个Object
         })
-        this.newData.idAttr=that.idAttr;
+        this.newData.idAttr = that.idAttr;
         upData.append('proDes', JSON.stringify(this.newData)) // 这里需要转换一下格式传给后台
 
         this.axios.post(api.uploadFiles, upData)
           .then(function(succ) {
             console.log(succ.data)
             if (succ.data.code == 200) {
-              console.log("上传成功")
-              that.file=[];
+              console.log('上传成功')
+              that.file = [];
               that.removeImgs();
-              that.detailProDialog=false;
+              that.detailProDialog = false;
               that.getList();
-              that.idAttr='';
-              that.newData.proName=''
+              that.idAttr = '';
+              that.newData.proName = ''
             }
           })
           .catch(function(error) {
             console.log(error);
           });
       },
-      cancelDialog(){
-        this.file=[];
+      cancelDialog() {
+        this.file = [];
         this.removeImgs();
-        this.detailProDialog=false;
-        this.idAttr='';
-        this.newData.proName=''
+        this.detailProDialog = false;
+        this.idAttr = '';
+        this.newData.proName = ''
       },
-      removeImgs(){
+      removeImgs() {
         this.$refs.upload.clearFiles();
       },
       // 获取列表数据
@@ -319,7 +397,7 @@
         const par = {
           pageSize: vm.listQuery.pageSize,
           startIndex: (vm.listQuery.currPage - 1) * vm.listQuery.pageSize,
-          proName: vm.listQuery.name,         // 产品名称
+          proName: vm.listQuery.name         // 产品名称
           // tag: vm.listQuery.type       // 类型
         };
         //获取产品列表
@@ -330,7 +408,7 @@
         });
       },
       //预览已经上传的图片
-      proviewImg(row){
+      proviewImg(row) {
         console.log(row)
         console.log(11)
         // 带参跳转
@@ -338,31 +416,31 @@
 
       },
       //去上传照片
-      undoneImage(index,row){
-        this.detailProDialog=true;
+      undoneImage(index, row) {
+        this.detailProDialog = true;
         console.log(index)
         console.log(row)
-        this.idAttr=row.idAttr;
+        this.idAttr = row.idAttr;
       },
       // 编辑
       handleEdit(index, row) {
 
         const vm = this;
-        vm.pageName='修改页面'
+        vm.pageName = '修改页面'
         console.log('编辑的row：', index, '-----', row);
         console.log(this.list[index]);
 
-        let pro=this.list[index];
-        this.product.idAttr=pro.idAttr;
-        this.product.classid=pro.classid;
-        this.product.colour=pro.colour;
-        this.product.ftitle=pro.ftitle;
-        this.product.outputsizemax=pro.outputsizemax;
-        this.product.title=pro.title;
-        this.product.outputSpeedColor=pro.output_speed_color;
-        this.product.outputSpeedMono=pro.output_speed_mono;
+        let pro = this.list[index];
+        this.product.idAttr = pro.idAttr;
+        this.product.classid = pro.classid;
+        this.product.colour = pro.colour;
+        this.product.ftitle = pro.ftitle;
+        this.product.outputsizemax = pro.outputsizemax;
+        this.product.title = pro.title;
+        this.product.outputSpeedColor = pro.output_speed_color;
+        this.product.outputSpeedMono = pro.output_speed_mono;
 
-        this.dialogFormVisible=true;
+        this.dialogFormVisible = true;
 
         // this.axios.get(api.updatePro,vm.product)
         //   .then((suc)=>{
@@ -373,23 +451,26 @@
         // })
       },
       //上传pdf
-      handleUploadPdf(row){
-        console.log(row)
+      handleUploadPdf(row) {
+        this.proInfoId = row.idAttr;
+        this.dialogpdf = true;
+        // console.log(row)
+        // console.log(this.proInfoId)
 
       },
       // 单个删除
       handleDelete(index, row) {
         const vm = this;
         console.log('单个删除选择的row：', index, '-----', row);
-        let proId={proId:row.idAttr}
-        this.axios.get(api.delPro,{params:proId})
-          .then((success)=>{
+        let proId = { proId: row.idAttr }
+        this.axios.get(api.delPro, { params: proId })
+          .then((success) => {
             vm.getList();
-            console.log("删除su")
+            console.log('删除su')
           })
-          .catch((error)=>{
-            console.log("删除fa")
-            console.log("error")
+          .catch((error) => {
+            console.log('删除fa')
+            console.log('error')
           })
         vm.list.splice(index, 1)
       },
@@ -416,26 +497,26 @@
       },
       // 新增
       handleCreate() {
-        this.pageName='新增页面'
+        this.pageName = '新增页面'
         this.dialogFormVisible = true;
       },
       // 新增提交
       handleCreateSubmit() {
         const vm = this;
         console.log('新增入参：', vm.product)
-        this.axios.post(api.addPro,vm.product).then(suc=>{
-          console.log("addPro成功")
+        this.axios.post(api.addPro, vm.product).then(suc => {
+          console.log('addPro成功')
           vm.getList();
-          this.product.idAttr='';
-          this.product.classid='';
-          this.product.colour='';
-          this.product.ftitle='';
-          this.product.outputsizemax='';
-          this.product.title='';
-          this.product.outputSpeedColor='';
-          this.product.outputSpeedMono=''
-        }).catch(err=>{
-          console.log("addPro失败")
+          this.product.idAttr = '';
+          this.product.classid = '';
+          this.product.colour = '';
+          this.product.ftitle = '';
+          this.product.outputsizemax = '';
+          this.product.title = '';
+          this.product.outputSpeedColor = '';
+          this.product.outputSpeedMono = ''
+        }).catch(err => {
+          console.log('addPro失败')
         })
 
         console.log('新增后', vm.list)

@@ -21,7 +21,7 @@
                     登录
                 </el-button>
             </el-form-item>
-            <div class='tips'>管理员帐号为:km 密码：123456</div>
+<!--            <div class='tips'>管理员帐号为:km 密码：123456</div>-->
 
             <!--<router-link to="/sendpwd" class="forget-pwd">-->
                 <!--忘记密码?(或首次登录)-->

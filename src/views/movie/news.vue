@@ -109,7 +109,7 @@
             </div>
         </el-dialog>
         <!-- 新增弹窗 -->
-        <el-dialog title="新增产品" :visible.sync="dialogFormVisible">
+        <el-dialog title="新增新闻" :visible.sync="dialogFormVisible">
             <el-form class="small-space" :model="news" label-position="left" label-width="70px"
                      style='width: 400px; margin-left:50px;'>
 
