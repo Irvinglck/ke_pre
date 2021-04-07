@@ -22,6 +22,7 @@
 
             <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
             <el-button class="filter-item" type="primary" @click="handleCreate" icon="edit">添加</el-button>
+            <el-button class="filter-item" type="primary" @click="synData" icon="edit">同步官网数据</el-button>
             <!-- <el-button class="filter-item" type="primary" @click="handleDelAll"  icon="edit">批量删除</el-button>
            <el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button> -->
 
@@ -322,10 +323,10 @@
         formData.append('proInfoId', this.proInfoId);
         this.axios.post(api.uploadFileByType, formData)
           .then((suc) => {
-            console.log('图片上传成功');
+            console.log('pdf上传成功');
             console.log(suc.data)
             this.$message({
-              message: '图片上传成功',
+              message: 'PDF上传成功',
               type: 'success'
             });
             this.flag = false;
@@ -494,6 +495,24 @@
         // console.log('--------当前页：', val)
         this.listQuery.currPage = val;
         this.getList();
+      },
+      //同步官网数据
+      synData(){
+        var that=this;
+        this.axios.get(api.synData)
+          .then((suc)=>{
+            console.log("suc--------------",suc)
+            if(suc.data.code){
+              that.getList();
+              this.$message({
+                message: '同步成功',
+                type: 'success'
+              });
+            }
+          })
+          .catch((fail)=>{
+            this.$message.error("同步失败");
+          })
       },
       // 新增
       handleCreate() {

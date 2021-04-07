@@ -66,7 +66,8 @@ export const api = {
   delNews: kmUrl + '/bsm/delNews',//删除新闻
   getUsers: kmUrl + '/bsm/getUsers',//获取用户列表
   delUser: kmUrl + '/bsm/delUser',//删除新闻
-  userLogin: kmUrl + '/bsm/userLogin'//用户登录
+  userLogin: kmUrl + '/bsm/userLogin',//用户登录
+  synData: kmUrl + '/bsm/synData'//同步数据
 
 }
 
