@@ -106,7 +106,7 @@
             </el-table-column>
             <el-table-column align="center" label="上传pdf" width="150px">
                 <template slot-scope="scope">
-                    <el-button v-if="scope.row.havePdf=='true'" size="small" type="info">已上传pdf</el-button>
+                    <el-button v-if="scope.row.havePdf=='true'" @click="overWritePdf(scope.row)" size="small" type="info">已上传pdf</el-button>
                     <el-button v-else size="small" type="warning" @click="handleUploadPdf(scope.row)">上传pdf</el-button>
 
                 </template>
@@ -450,6 +450,29 @@
         // .catch((error)=>{
         //
         // })
+      },
+      //覆盖pdf
+      overWritePdf(row){
+        this.open(row);
+      },
+      open(row) {
+        var that=this;
+        this.$confirm('此操作将覆盖之前pdf文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // console.log("proInfoId00000000000000000",row.idAttr)
+          that.proInfoId = row.idAttr;
+          // console.log("proInfoId",that.proInfoId)
+          that.dialogpdf = true;
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消覆盖PDF'
+          });
+        });
       },
       //上传pdf
       handleUploadPdf(row) {
