@@ -30,14 +30,15 @@
 
 
         <!-- 表格 v-loading.body="listLoading"-->
+        <!--<el-table ref="multipleTable" @selection-change="handleSelectionChange" :data="list"-->
         <el-table ref="multipleTable" @selection-change="handleSelectionChange" :data="list"
                   element-loading-text="拼命加载中" border fit highlight-current-row>
-            <el-table-column type="selection" width="50">
-            </el-table-column>
+            <!--<el-table-column type="selection" width="50">-->
+            <!--</el-table-column>-->
 
             <el-table-column align="center" label='序号' width="70">
                 <template slot-scope="scope">
-                    {{ scope.$index+1 }}
+                    {{ scope.row.idAttr }}
                 </template>
             </el-table-column>
 
@@ -197,11 +198,11 @@
             <el-form class="small-space" :model="product" label-position="left" label-width="70px"
                      style='width: 400px; margin-left:50px;'>
 
-                <el-form-item label="型号">
+                <el-form-item label="型号" class="icon_star">
                     <el-input v-model="product.title"></el-input>
                 </el-form-item>
 
-                <el-form-item label="类型">
+                <el-form-item label="类型" class="icon_star">
                     <!--<el-input v-model="product.classid"></el-input>-->
                     <el-select v-model="product.classid" placeholder="请选择">
                         <el-option
@@ -213,20 +214,20 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="名称">
+                <el-form-item label="名称" class="icon_star">
                     <el-input v-model="product.ftitle"></el-input>
                 </el-form-item>
 
-                <el-form-item label="尺寸">
+                <el-form-item label="尺寸" class="icon_star">
                     <el-input v-model="product.outputsizemax"></el-input>
                 </el-form-item>
-                <el-form-item label="颜色">
+                <el-form-item label="颜色" class="icon_star">
                     <el-input v-model="product.colour"></el-input>
                 </el-form-item>
-                <el-form-item label="彩印打印速度">
+                <el-form-item label="彩印打印速度" class="icon_star">
                     <el-input v-model="product.outputSpeedColor"></el-input>
                 </el-form-item>
-                <el-form-item label="黑白打印速度">
+                <el-form-item label="黑白打印速度" class="icon_star">
                     <el-input v-model="product.outputSpeedMono"></el-input>
                 </el-form-item>
 
@@ -404,6 +405,7 @@
         //获取产品列表
         this.axios.get(api.proList, { params: par }).then(res => {
           vm.list = res.data.data.data;
+          vm.total=res.data.data.totalCount;
         }).catch(error => {
           console.log(error)
         });
@@ -427,7 +429,7 @@
       handleEdit(index, row) {
 
         const vm = this;
-        vm.pageName = '修改页面'
+        vm.pageName = '修改产品'
         console.log('编辑的row：', index, '-----', row);
         console.log(this.list[index]);
 
@@ -484,6 +486,20 @@
       },
       // 单个删除
       handleDelete(index, row) {
+        this.$confirm(`此操作将删除产品 , 是否继续?`, {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.dellPro(index, row);
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      dellPro(index, row){
         const vm = this;
         console.log('单个删除选择的row：', index, '-----', row);
         let proId = { proId: row.idAttr }
@@ -539,8 +555,18 @@
       },
       // 新增
       handleCreate() {
-        this.pageName = '新增页面'
+        this.pageName = '新增产品'
         this.dialogFormVisible = true;
+
+
+        this.product.idAttr = '';
+        this.product.classid = '';
+        this.product.colour = '';
+        this.product.ftitle = '';
+        this.product.outputsizemax ='';
+        this.product.title = '';
+        this.product.outputSpeedColor = '';
+        this.product.outputSpeedMono = '';
       },
       // 新增提交
       handleCreateSubmit() {
@@ -589,5 +615,15 @@
   };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-
+    .icon_star{
+        position: relative;
+    }
+    .icon_star::after{
+        content: "*";
+        display: block;
+        position: absolute;
+        left: 60px;
+        top: 17px;
+        color: red;
+    }
 </style>

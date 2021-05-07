@@ -6,11 +6,11 @@
 
         <!-- 搜索条件 -->
         <div class="filter-container">
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="人员收索"
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="后台人员收索"
                       v-model="listQuery.name">
             </el-input>
             <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-            <el-button class="filter-item" type="primary" @click="handleCreate" icon="edit">添加后管人员</el-button>
+            <el-button class="filter-item" type="primary" @click="handleCreate" icon="edit">添加后台人员</el-button>
             <!--<el-button class="filter-item" type="primary" @click="handleDelAll"  icon="edit">批量删除</el-button>-->
             <!--<el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button>-->
 
@@ -20,14 +20,14 @@
         <!-- 表格 v-loading.body="listLoading"-->
         <el-table ref="multipleTable" @selection-change="handleSelectionChange" :data="list"
                   element-loading-text="拼命加载中" border fit highlight-current-row>
-            <el-table-column type="selection" width="50">
-            </el-table-column>
+            <!--<el-table-column type="selection" width="50">-->
+            <!--</el-table-column>-->
 
-            <el-table-column align="center" label='序号' width="70">
-                <template slot-scope="scope">
-                    {{ scope.$index+1 }}
-                </template>
-            </el-table-column>
+            <!--<el-table-column align="center" label='序号' width="70">-->
+                <!--<template slot-scope="scope">-->
+                    <!--{{ scope.$index+1 }}-->
+                <!--</template>-->
+            <!--</el-table-column>-->
             <el-table-column label="账号" align="center" width="100px" prop="rating.average">
                 <template slot-scope="scope">
                     {{scope.row.account}}
@@ -116,22 +116,22 @@
             </div>
         </el-dialog>
         <!-- 新增弹窗 -->
-        <el-dialog title="新增产品" :visible.sync="dialogFormVisible">
+        <el-dialog title="新增后台人员" :visible.sync="dialogFormVisible">
             <el-form class="small-space" :model="user" label-position="left" label-width="70px"
                      style='width: 400px; margin-left:50px;'>
-                <el-form-item label="账号">
+                <el-form-item label="账号" class="icon_star">
                     <el-input v-model="user.account"></el-input>
                 </el-form-item>
-                <el-form-item label="密码">
+                <el-form-item label="密码" class="icon_star">
                     <el-input v-model="user.password"></el-input>
                 </el-form-item>
-                <el-form-item label="昵称">
+                <el-form-item label="昵称" class="icon_star">
                     <el-input v-model="user.nickName"></el-input>
                 </el-form-item>
-                <el-form-item label="真实姓名">
+                <el-form-item label="真实姓名" class="icon_star">
                     <el-input v-model="user.realName"></el-input>
                 </el-form-item>
-                <el-form-item label="性别">
+                <el-form-item label="性别" class="icon_star">
                     <el-select v-model="user.sex" placeholder="请选择">
                         <el-option
                                 v-for="item in options"
@@ -148,7 +148,7 @@
                 <el-form-item label="个人简介">
                     <el-input v-model="user.introduce"></el-input>
                 </el-form-item>
-                <el-form-item label="头像">
+                <el-form-item label="头像" class="icon_star">
                     <el-upload
                             class="upload-demo"
                             drag
@@ -300,6 +300,7 @@
         //获取产品列表
         this.axios.get(api.getUsers, { params: par }).then(res => {
           vm.list = res.data.data.data;
+          vm.total=res.data.data.totalCount;
           console.log('nwe----------', vm.list)
         }).catch(error => {
           console.log(error)
@@ -326,6 +327,20 @@
       },
       // 单个删除
       handleDelete(index, row) {
+        this.$confirm(`此操作将删除用户 , 是否继续?`, {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delPeo(index,row);
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      delPeo(index, row){
         const vm = this;
         console.log('单个删除选择的row：', index, '-----', row);
         let userId = { userId: row.id }
@@ -337,9 +352,7 @@
           .catch((error) => {
             console.log('删除fa')
             console.log('error')
-          })
-        // vm.list.splice(index, 1)
-      },
+          })},
       // 批量删除
       handleDelAll() {
         const vm = this;
@@ -446,5 +459,15 @@
   };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-
+    .icon_star{
+        position: relative;
+    }
+    .icon_star::after{
+        content: "*";
+        display: block;
+        position: absolute;
+        left: 60px;
+        top: 17px;
+        color: red;
+    }
 </style>

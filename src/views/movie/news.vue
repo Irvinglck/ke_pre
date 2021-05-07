@@ -6,7 +6,7 @@
 
         <!-- 搜索条件 -->
         <div class="filter-container">
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="搜索新闻"
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="搜索标题/副标题"
                       v-model="listQuery.name">
             </el-input>
 
@@ -22,14 +22,14 @@
         <!-- 表格 v-loading.body="listLoading"-->
         <el-table ref="multipleTable" @selection-change="handleSelectionChange" :data="list"
                   element-loading-text="拼命加载中" border fit highlight-current-row>
-            <el-table-column type="selection" width="50">
-            </el-table-column>
+            <!--<el-table-column type="selection" width="50">-->
+            <!--</el-table-column>-->
 
-            <el-table-column align="center" label='序号' width="70">
-                <template slot-scope="scope">
-                    {{ scope.$index+1 }}
-                </template>
-            </el-table-column>
+            <!--<el-table-column align="center" label='序号' width="70">-->
+                <!--<template slot-scope="scope">-->
+                    <!--{{ scope.$index+1 }}-->
+                <!--</template>-->
+            <!--</el-table-column>-->
 
             <el-table-column label="图片"  align="center" width="100px" prop="rating.average">
                 <template slot-scope="scope">
@@ -113,17 +113,17 @@
             <el-form class="small-space" :model="news" label-position="left" label-width="70px"
                      style='width: 400px; margin-left:50px;'>
 
-                <el-form-item label="标题">
+                <el-form-item label="标题" class="icon_star">
                     <el-input v-model="news.title"></el-input>
                 </el-form-item>
-                <el-form-item label="副标题">
+                <el-form-item label="副标题" class="icon_star">
                     <el-input v-model="news.subtitle"></el-input>
                 </el-form-item>
-                <el-form-item label="新闻地址">
+                <el-form-item label="新闻地址" class="icon_star">
                     <el-input v-model="news.nurl"></el-input>
                 </el-form-item>
                 <!--<el-form-item label="选择banner图片" :label-width="formLabelWidth">-->
-                <el-form-item label="标题图片" >
+                <el-form-item label="标题图片" class="icon_star">
                     <el-upload
                             class="upload-demo"
                             drag
@@ -267,7 +267,9 @@
         //获取产品列表
         this.axios.get(api.getNewsList, { params: par }).then(res => {
           vm.list = res.data.data.data;
+          vm.total=res.data.data.totalCount;
           console.log("nwe----------",vm.list)
+          // console.log("nwe--222--------",res.data.data.totalCount)
         }).catch(error => {
           console.log(error)
         });
@@ -315,6 +317,20 @@
       },
       // 单个删除
       handleDelete(index, row) {
+        this.$confirm(`此操作将删除新闻 , 是否继续?`, {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.dellNew(index, row);
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+      dellNew(index, row){
         const vm = this;
         console.log('单个删除选择的row：', index, '-----', row);
         let newId={newId:row.id}
@@ -327,7 +343,6 @@
             console.log("删除fa")
             console.log("error")
           })
-        // vm.list.splice(index, 1)
       },
       // 批量删除
       handleDelAll() {
@@ -423,5 +438,15 @@
   };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-
+    .icon_star{
+        position: relative;
+    }
+    .icon_star::after{
+        content: "*";
+        display: block;
+        position: absolute;
+        left: 60px;
+        top: 17px;
+        color: red;
+    }
 </style>

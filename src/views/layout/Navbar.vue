@@ -2,7 +2,7 @@
     <div class="">
         <el-menu class="navbar" mode="horizontal">
 
-            <i class="fa fa-bars" @click="toggleSideBar" :isActive="sidebar.opened"></i>
+            <!--<i class="fa fa-bars" @click="toggleSideBar" :isActive="sidebar.opened"></i>-->
 
             <tabs-view></tabs-view>
 

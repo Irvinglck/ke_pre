@@ -8,7 +8,7 @@
             <el-form-item prop="email">
                 <span class="svg-container"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span>
                 <el-input name="email" type="text" v-model="loginForm.email" autoComplete="off"
-                          placeholder="邮箱"></el-input>
+                          placeholder="账号"></el-input>
             </el-form-item>
             <el-form-item prop="password">
                 <span class="svg-container"><i class="fa fa-lock" aria-hidden="true"></i></span>

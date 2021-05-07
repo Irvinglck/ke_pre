@@ -28,10 +28,10 @@
 
         <el-dialog title="添加banner图片" :visible.sync="dialogFormVisible">
             <el-form :model="form">
-                <el-form-item label="banner名称" :label-width="formLabelWidth" style="width: 500px">
+                <el-form-item label="banner名称" :label-width="formLabelWidth" class="icon_star" style="width: 500px">
                     <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="选择banner图片" :label-width="formLabelWidth">
+                <el-form-item label="选择banner图片" :label-width="formLabelWidth" class="icon_star">
                     <el-upload
                             class="upload-demo"
                             drag
@@ -209,6 +209,18 @@
 
     .clearfix:after {
         clear: both
+    }
+
+    .icon_star{
+        position: relative;
+    }
+    .icon_star::after{
+        content: "*";
+        display: block;
+        position: absolute;
+        left: 110px;
+        top: 17px;
+        color: red;
     }
 
 </style>
