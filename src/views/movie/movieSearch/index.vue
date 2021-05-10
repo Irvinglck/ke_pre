@@ -6,7 +6,7 @@
 
         <!-- 搜索条件 -->
         <div class="filter-container">
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="产品名称"
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="产品型号"
                       v-model="listQuery.name">
             </el-input>
 
